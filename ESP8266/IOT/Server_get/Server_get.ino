@@ -1,0 +1,68 @@
+#include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
+
+#define ledServ 4
+#define ledCon 2
+
+
+//Introducir Parámetros de la red a la que te quieres conectar_ SSID y PASSWORD
+const char* ssid="SSID";
+const char* password="PASSWORD";
+
+String ESTADO = "En espera, ON/OFF";
+
+const char* html_page PROGMEM = "<!DOCTYPE html><html><head> <title>Mi Pagina de Pruebas IoT: Danipr20</title></head><body> <h1>Bienvenido a Mi Pagina IoT Pedazo de Gilipollas</h1> <p>Monepe, eres un cacho de pedazo de trozo de mierda. Comete una napolitana en mi honor</p> <p>Estado del dispositivo: <span id=\"estado\">Desconectado</span></p> <button onclick=\"encender()\">Encender</button> <button onclick=\"apagar()\">Apagar</button> <script> function encender() { document.getElementById('estado').innerText = 'Encendido'; // Aquí puedes agregar código para controlar tu dispositivo IoT cuando se enciende. } function apagar() { document.getElementById('estado').innerText = 'Apagado'; // Aquí puedes agregar código para controlar tu dispositivo IoT cuando se apaga. } </script></body></html>";
+
+ESP8266WebServer server(80);
+
+// ip?LED=0/1
+void handleRoot() {
+  server.send(200, "text/html", html_page);
+
+  String ledState = server.arg("LED");
+  Serial.print("Argumento recibido: ");
+  ledState.toUpperCase();
+  Serial.println(ledState);
+
+
+
+  if (ledState == "ON") {
+    digitalWrite(ledServ, HIGH);
+  }
+
+  if (ledState == "OFF") {
+    digitalWrite(ledServ, LOW);
+  } 
+  
+
+
+  digitalWrite(ledCon, LOW);
+  Serial.println("Solicitud aceptada");
+  delay(1500);
+  digitalWrite(ledCon, HIGH);
+}
+
+void setup() {
+  pinMode(ledCon, OUTPUT);
+  pinMode(ledServ, OUTPUT);
+  Serial.begin(115200);
+
+  Serial.println("\nWIFI station setting");
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1500);
+    Serial.print(".");
+  }
+  Serial.println("\n WIFI ready");
+  Serial.print("IP: ");
+  Serial.println(WiFi.localIP());
+  server.on("/", handleRoot);
+  server.begin();
+  Serial.println("Server HTTP started");
+}
+
+void loop(){
+  server.handleClient();
+}
