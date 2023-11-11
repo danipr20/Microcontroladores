@@ -1,10 +1,9 @@
 #include <Arduino.h>
-#include <IRremoteESP8266.h>
-#include <IRsend.h>
+#include <IRremote.hpp>
 
 uint32_t signal = 0xC; // Tu señal IR de encendido RC6 de 20 bits
 
-const int IR_SEND_PIN = 4; // Pin GPIO para el emisor IR
+const int IR_SEND_PIN = 3; // Pin GPIO para el emisor IR
 
 IRsend irsend(IR_SEND_PIN);
 
