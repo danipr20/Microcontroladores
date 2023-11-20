@@ -9,7 +9,7 @@ const int IR_SEND_PIN = 4; // Pin GPIO para el emisor IR
 IRsend irsend(IR_SEND_PIN);
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(9600);
 }
 
 void loop() {

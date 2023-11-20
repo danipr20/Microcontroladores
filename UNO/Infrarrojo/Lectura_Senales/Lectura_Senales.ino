@@ -1,5 +1,4 @@
 #include <IRremote.h>
-#include <IRremoteInt.h>
 
 int RECV_PIN = 11;
 

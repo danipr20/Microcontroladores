@@ -16,5 +16,5 @@ void loop() {
 
   irsend.sendRC6(signal, 20); // Envía la señal IR RC6
 
-  delay(3000); // Espera 10 segundos antes de enviar otra señal
+  delay(7000); // Espera 10 segundos antes de enviar otra señal
 }
