@@ -19,8 +19,8 @@ void loop() {
   int potYValue = analogRead(potYPin); // Lee el potenciómetro del eje Y
 
   // Mapea los valores de los potenciómetros a ángulos para los servos (0-180 grados)
-  int angleX = map(potXValue, 1000, 1200, 0, 180);
-  int angleY = map(potYValue, 0, 4095, 1, 179);
+  int angleX = map(potXValue, 0, 4095, 10, 170);
+  int angleY = map(potYValue, 0, 4095, 10, 170);
 
   // Mueve los servos a las posiciones calculadas
   servoX.write(angleX);
