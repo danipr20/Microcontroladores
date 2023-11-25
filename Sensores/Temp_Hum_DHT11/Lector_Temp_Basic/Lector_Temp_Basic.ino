@@ -22,8 +22,4 @@ Serial.print("Temperatura = "); Serial.print(  String(temp));
 Serial.print("     Humedad = "); Serial.println(hum);
 
 delay (60000);
-
-
-
-
 }
