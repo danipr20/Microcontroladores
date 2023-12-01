@@ -3,7 +3,7 @@
 
 #define LED 2
 
-const char* ssid = "Vendo Opel Corsa";
+const char* ssid = "Esu cabezon";
 const char* password = "";
 
   int devicemem=0;
