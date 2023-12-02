@@ -5,20 +5,30 @@
 //temp_anal
 #include <OneWire.h>
 
-#define TIME 2000
+#define TIME 500
+
+//////////////////////////////
+/*
+Cableado
+LED aviso de comienzo programa        pin D2
+Sensor de temperatura ANALOGICO       pin D7
+
+*/
+/////////////////////////////
+
 
 //temp digital
 DHT dht(3, DHT11); //conectar sensor al pin D3
 float temp;
 float hum;
-float temp_anal;
 
 //temp anal
-OneWire ds(10);  // on pin 10 (a 4.7K resistor is necessary)
+OneWire ds(7);  // on pin 10 (a 4.7K resistor is necessary)
+float temp_anal=0;
 
 
 File myFile;
-int i = 0;
+int nReg=0;
 int numArch = 0;
 String nombreArchivo = "regdat";
 String terminacion = ".txt";
@@ -46,24 +56,21 @@ void setup() {
 
   myFile.print("Config: ");
   myFile.print("Tiempo de muestreo establecido: ");
-  myFile.print(TIME / 1000); myFile.print(" Segundos");  // Convierte a segundos
+  myFile.print(TIME / 1000); myFile.println(" Segundos");  // Convierte a segundos
 
   myFile.close();
-    digitalWrite(2, HIGH);
 delay(1000);
 }
 
 void loop() {
-    digitalWrite(2, LOW);
-
   temp = dht.readTemperature();
   hum = dht.readHumidity();
 
-
-  
-  byte i;
+  ///////////////////////GET_ANALOG_TEMP
+      byte i;
   byte data[9];
   byte addr[8];
+
   float celsius;
 
   if (!ds.search(addr)) {
@@ -117,8 +124,12 @@ void loop() {
     else if (cfg == 0x40) raw = raw & ~1; // Resolución de 11 bits, 375 ms
     // Predeterminado es resolución de 12 bits, tiempo de conversión de 750 ms
   }
-  temp_anal = (float)raw / 16.0;
+  celsius = (float)raw / 16.0;
+  //////////////////////////////////
 
+
+
+  temp_anal=celsius;
 
   Serial.println("Temperatura y humedad, sensor digital:");
   Serial.print("Temperatura = ");
@@ -128,26 +139,25 @@ void loop() {
 
   Serial.println("Temperatura, sensor analogico:");
   Serial.print("Temperatura = ");
-  Serial.print(String(temp_anal));
+  Serial.println(String(temp_anal));
 
   myFile = SD.open("ARDUINO/Proyect/registro/" + nombreArchivoCompl, FILE_WRITE);
 
   myFile.print("Registro ");
-  myFile.println(i);
+  myFile.println(nReg);
 
   myFile.println("Temperatura y humedad, sensor digital:");
   myFile.print("Temperatura = ");
   myFile.print(String(temp));
   myFile.print("     Humedad = ");
   myFile.println(hum);
-/*
+
   myFile.println("Temperatura, sensor analogico:");
   myFile.print("Temperatura = ");
   myFile.println(String(temp_anal));
-*/
-  myFile.close();
-  digitalWrite(2, HIGH);
 
-  i++;
+  myFile.close();
+
+  nReg++;
   delay(TIME);
 }

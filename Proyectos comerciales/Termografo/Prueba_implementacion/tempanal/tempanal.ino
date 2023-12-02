@@ -1,59 +1,25 @@
+#include <OneWire.h>
 #include <SPI.h>
 #include <SD.h>
 
-//temp_anal
-#include <OneWire.h>
-
-#define TIME 2000
-
-//temp digital
-OneWire ds(10);  // on pin 10 (a 4.7K resistor is necessary)
-
-float temp_anal;
-
-//temp anal
+OneWire ds(5);  // on pin 10 (a 4.7K resistor is necessary)
 
 
-File myFile;
-int i = 0;
-int numArch = 0;
-String nombreArchivo = "regdat";
-String terminacion = ".txt";
-String nombreArchivoCompl = "";
-
-
-
-
-void setup() {
+void setup(void) {
+  Serial.begin(9600);
   pinMode(2, OUTPUT);
 
   Serial.begin(9600);
-  SD.begin(4);
+ SD.begin(4);
 
   // SD.mkdir("Arduino");
-  SD.mkdir("ARDUINO/Proyect/registro");
-
-  do {
-    nombreArchivoCompl = nombreArchivo + String(numArch) + terminacion;
-    numArch++;
-  } while (SD.exists("ARDUINO/Proyect/registro/" + nombreArchivoCompl));
-
-  myFile = SD.open("ARDUINO/Proyect/registro/" + nombreArchivoCompl, FILE_WRITE);
-
-  myFile.print("Config: ");
-  myFile.print("Tiempo de muestreo establecido: ");
-  myFile.print(TIME / 1000); myFile.print(" Segundos");  // Convierte a segundos
-
-  myFile.close();
-    digitalWrite(2, HIGH);
-delay(1000);
+ /* SD.mkdir("ARDUINO/Proyect/registro");
+  myFile = SD.open("ARDUINO/Proyect/registro/anal", FILE_WRITE);
+    myFile.close();
+    digitalWrite(2, HIGH);*/
 }
 
-void loop() {
-    digitalWrite(2, LOW);
-
-
-
+void loop(void) {
 
   byte i;
   byte data[9];
@@ -109,34 +75,6 @@ void loop() {
     else if (cfg == 0x40) raw = raw & ~1; // 11 bit res, 375 ms
   }
   celsius = (float)raw / 16.0;
-
-
-  
   Serial.print("Temperature = ");
   Serial.println(celsius);
-  temp_anal=celsius;
-
-
-
-
-  Serial.println("Temperatura, sensor analogico:");
-  Serial.print("Temperatura = ");
-  Serial.print(String(temp_anal));
-
-  myFile = SD.open("ARDUINO/Proyect/registro/" + nombreArchivoCompl, FILE_WRITE);
-
-  myFile.print("Registro ");
-  myFile.println(i);
-
-
-
-  myFile.println("Temperatura, sensor analogico:");
-  myFile.print("Temperatura = ");
-  myFile.println(String(temp_anal));
-
-  myFile.close();
-  digitalWrite(2, HIGH);
-
-  i++;
-  delay(TIME);
 }
