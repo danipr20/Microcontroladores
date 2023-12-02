@@ -34,6 +34,12 @@ void resetearArray() {
   }
 }
 
+void creaRegistro(){
+  do {
+    nombreArchivoCompl = nombreArchivo + String(numArch) + terminacion;
+    numArch++;
+  } while (SD.exists("ARDUINO/Proyect/registro/" + nombreArchivoCompl));
+}
 
 void setup() {
   //variables config
@@ -43,6 +49,7 @@ void setup() {
   int hora = 0;
 
   pinMode(2, OUTPUT);
+  digitalWrite(2, HIGH);
 
   Serial.begin(9600);
   SD.begin(4);
@@ -53,10 +60,7 @@ void setup() {
   SD.mkdir("ARDUINO/Proyect/config");
 
 
-  do {
-    nombreArchivoCompl = nombreArchivo + String(numArch) + terminacion;
-    numArch++;
-  } while (SD.exists("ARDUINO/Proyect/registro/" + nombreArchivoCompl));
+  creaRegistro();
 
   SD.remove("ARDUINO/Proyect/config/config.ini");
 
@@ -118,8 +122,11 @@ void setup() {
 
   Serial.print("Tiempo seleccionado= ");
   Serial.println(TIME);
-  digitalWrite(2, HIGH);
+  digitalWrite(2, LOW);
 }
+
+
+
 
 void loop() {
 
