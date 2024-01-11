@@ -16,10 +16,9 @@ uint32_t signal = 0xC;  // Tu señal IR de encendido RC6 de 20 bits
 
 
 void setup() {
-  Serial.begin(9600);
-  pinMode(BUTTON_PIN_4, INPUT);
-  //pinMode(BUTTON_PIN_5, INPUT_PULLUP);
-  // pinMode(BUTTON_PIN_6, INPUT_PULLUP);
+ /* pinMode(BUTTON_PIN_4, INPUT);
+  pinMode(BUTTON_PIN_5, INPUT_PULLUP);
+  pinMode(BUTTON_PIN_6, INPUT_PULLUP);*/
 }
 
 

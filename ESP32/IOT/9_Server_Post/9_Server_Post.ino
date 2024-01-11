@@ -7,18 +7,20 @@
 
 
 //Introducir Parámetros de la red a la que te quieres conectar_ SSID y PASSWORD
-const char* ssid="SSID";
-const char* password="PASSWORD";
+const char* ssid="Led Dani";
+const char* password="daniled1";
 
 String ESTADO = "En espera, ON/OFF";
 
-const String html_page_orig1 PROGMEM = "<!DOCTYPE html><html> <head> <title>Led Control</title> </head> <body> <h1>Led State</h1> <h2>";
+const String html_page_orig1 PROGMEM = "<!DOCTYPE html><html> <head> <title>Led Control</title> <style> body { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; } h1, h2 { font-size: 80px; } button { font-size: 100px; margin: 40px; } </style> </head> <body> <h1>Led State</h1> <h2>";
 
 const String html_page_orig2 PROGMEM = "</h2> <div> <form method=\"POST\" action=\"/\"> <button id=\"on\" name=\"LED\" value=\"1\">ON</button> <button id=\"off\" name=\"LED\" value=\"0\">OFF</button> </form> </div> </body></html>";
 
 String POST = "prueba post";
 
 String PROGMEM html_page;
+
+
 
 String Html_construct() {
 
@@ -42,7 +44,7 @@ void handleRoot() {
     digitalWrite(ledServ, HIGH);
   }
 
-  if (ledState == "0") {
+  else if (ledState == "0") {
     ESTADO = "OFF";
     digitalWrite(ledServ, LOW);
   }
@@ -54,15 +56,17 @@ void handleRoot() {
   html_page = Html_construct();
   server.send(200, "text/html", html_page);
 
-  digitalWrite(ledCon, HIGH);
+ /* digitalWrite(ledCon, HIGH);
   Serial.println("Solicitud aceptada");
   delay(500);
-  digitalWrite(ledCon, LOW);
+  digitalWrite(ledCon, LOW);*/
 }
 
 void setup() {
   pinMode(ledCon, OUTPUT);
   pinMode(ledServ, OUTPUT);
+  digitalWrite(ledCon, HIGH);
+
   Serial.begin(115200);
 
   Serial.println("\nWIFI station setting");
@@ -79,6 +83,8 @@ void setup() {
   server.on("/", handleRoot);
   server.begin();
   Serial.println("Server HTTP started");
+    digitalWrite(ledCon, LOW);
+
 }
 
 void loop() {

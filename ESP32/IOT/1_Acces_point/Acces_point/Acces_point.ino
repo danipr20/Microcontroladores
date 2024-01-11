@@ -1,7 +1,7 @@
 #include <WiFi.h>
 
-const char* ssid = "Vendo OPEL CORSA";
-const char* password = "password";
+const char* ssid = "Vendo OPEL CORSA larg";
+const char* password = "";
 
 void setup() {
   Serial.begin(115200);
